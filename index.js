@@ -1,6 +1,11 @@
 const base64Decode = require('fast-base64-decode')
 const { NativeModules } = require('react-native')
 
+import {Platform,TurboModuleRegistry} from "react-native"
+
+var getRandom =TurboModuleRegistry ? 
+TurboModuleRegistry.get('GetRandomValuesNativeModule') : NativeModules.getRandom;
+
 class TypeMismatchError extends Error {}
 class QuotaExceededError extends Error {}
 
@@ -24,23 +29,31 @@ function insecureRandomValues (array) {
  * @returns {string}
  */
 function getRandomBase64 (byteLength) {
-  if (NativeModules.RNGetRandomValues) {
-    return NativeModules.RNGetRandomValues.getRandomBase64(byteLength)
-  } else if (NativeModules.ExpoRandom) {
-    // Expo SDK 41-44
-    return NativeModules.ExpoRandom.getRandomBase64String(byteLength)
-  } else if (global.ExpoModules) {
-    // Expo SDK 45+
-    return global.ExpoModules.ExpoRandom.getRandomBase64String(byteLength);
+
+  if (Platform.OS == 'harmony') {
+   return  getRandom.getRandomBase64(byteLength)
   } else {
-    throw new Error('Native module not found')
+    if (NativeModules.RNGetRandomValues) {
+      return NativeModules.RNGetRandomValues.getRandomBase64(byteLength)
+    } else if (NativeModules.ExpoRandom) {
+      // Expo SDK 41-44
+      return NativeModules.ExpoRandom.getRandomBase64String(byteLength)
+    } else if (global.ExpoModules) {
+      // Expo SDK 45+
+      return global.ExpoModules.ExpoRandom.getRandomBase64String(byteLength);
+    } else {
+       throw new Error('Native module not found ')
+    }
+
   }
+
+
 }
 
 /**
  * @param {Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Uint8ClampedArray} array
  */
-function getRandomValues (array) {
+  function getRandomValues (array) {
   if (!(array instanceof Int8Array || array instanceof Uint8Array || array instanceof Int16Array || array instanceof Uint16Array || array instanceof Int32Array || array instanceof Uint32Array || array instanceof Uint8ClampedArray)) {
     throw new TypeMismatchError('Expected an integer array')
   }
@@ -76,6 +89,9 @@ function isRemoteDebuggingInChrome () {
 
   return __DEV__ && typeof global.nativeCallSyncHook === 'undefined'
 }
+
+
+
 
 if (typeof global.crypto !== 'object') {
   global.crypto = {}
