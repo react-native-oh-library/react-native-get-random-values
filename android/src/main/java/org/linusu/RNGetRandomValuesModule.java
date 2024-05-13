@@ -28,7 +28,6 @@ public class RNGetRandomValuesModule extends ReactContextBaseJavaModule {
   public String getRandomBase64(int byteLength) throws NoSuchAlgorithmException {
     byte[] data = new byte[byteLength];
     SecureRandom random = new SecureRandom();
-
     random.nextBytes(data);
 
     return Base64.encodeToString(data, Base64.NO_WRAP);
