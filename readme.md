@@ -1,41 +1,13 @@
-# `crypto.getRandomValues` for React Native
+# @react-native-oh-tpl/react-native-get-random-values
 
-A small implementation of `crypto.getRandomValues` for React Native. This is useful to polyfill for libraries like [uuid](https://www.npmjs.com/package/uuid) that depend on it.
+This project is based on [react-native-get-random-values](https://github.com/LinusU/react-native-get-random-values)
 
-## Installation
+## Documentation URL
 
-```sh
-npm install react-native-get-random-values
-npx pod-install
-```
+- [中文](https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-get-random-values.md)
 
-> 💡 If you use the Expo managed workflow you will see "CocoaPods is not supported in this project" - this is fine, it's not necessary.
+- [英文](https://gitee.com/react-native-oh-library/usage-docs/blob/master/en/react-native-get-random-values.md)
 
-## Usage
+## License
 
-This library works as a polyfill for the global `crypto.getRandomValues`.
-
-```javascript
-// Add this line to your `index.js`
-import 'react-native-get-random-values'
-```
-
-Now you can use `uuid` or other libraries that assume `crypto.getRandomValues` is available.
-
-```javascript
-import { v4 as uuid } from 'uuid'
-
-console.log(uuid())
-```
-
-## API
-
-### `crypto.getRandomValues(typedArray)`
-
-The `crypto.getRandomValues()` method lets you get cryptographically strong random values. The array given as the parameter is filled with random numbers (random in its cryptographic meaning).
-
-To guarantee enough performance, implementations are not using a truly random number generator, but they are using a pseudo-random number generator *seeded* with a value with enough entropy. The PRNG used differs from one implementation to the other but is suitable for cryptographic usages. Implementations are also required to use a seed with enough entropy, like a system-level entropy source.
-
-- `typedArray` - Is an integer-based TypedArray, that is an `Int8Array`, a `Uint8Array`, an `Int16Array`, a `Uint16Array`, an `Int32Array`, or a `Uint32Array`. All elements in the array are going to be overridden with random numbers.
-
-Returns the typed array that was passed in.
+This library is licensed under [The MIT License (MIT)](https://github.com/LinusU/react-native-get-random-values/blob/master/LICENSE) 
